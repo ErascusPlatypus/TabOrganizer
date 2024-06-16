@@ -1,6 +1,6 @@
 # group_my_tabs
 
-TabOrganizer is a Chrome extension that automatically groups your browser tabs by their topics. This tool helps in managing and organizing multiple tabs efficiently, improving your productivity and browser experience.
+Group My Tabs is a Chrome extension that automatically groups your browser tabs by their topics. This tool helps in managing and organizing multiple tabs efficiently, improving your productivity and browser experience.
 
 ## Features
 
