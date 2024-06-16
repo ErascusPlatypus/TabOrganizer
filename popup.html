@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Group Tabs</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 20px;
+            width: 100px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        #groupTabs {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            border-radius: 5px;
+            margin-top: 20px;
+        }
+        #groupTabs:hover {
+            background-color: #0056b3;
+        }
+        #status {
+            margin-top: 20px;
+            font-size: 14px;
+        }
+        #status span {
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <h1>Group Tabs</h1>
+    <button id="groupTabs">Group Tabs</button>
+    <div id="status"></div>
+    <script src="popup.js"></script>
+</body>
+</html>
