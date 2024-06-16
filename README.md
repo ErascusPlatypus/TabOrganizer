@@ -13,7 +13,7 @@ TabOrganizer is a Chrome extension that automatically groups your browser tabs b
 
 1. **Clone the repository:**
     ```bash
-    git clone https://github.com/yourusername/TabOrganizer.git
+    git clone https://github.com/ErascusPlatypus/group_my_tabs.git
     ```
 2. **Navigate to the project directory:**
     ```bash
