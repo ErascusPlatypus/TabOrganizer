@@ -1,17 +1,22 @@
-chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
+browser.runtime.onMessage.addListener((message, sender, sendResponse) => {
     if (message.action === "group_tabs") {
         fetchTabUrls().then(tabs => {
             const tabUrls = tabs.map(tab => tab.url);
             console.log("Tab URLs retrieved:", tabUrls);
 
-            fetch('https://taborganizer.onrender.com/predict_topic', {
+            fetch('http://127.0.0.1:5000/predict_topic', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify({ urls: tabUrls })
             })
-            .then(response => response.json())
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
             .then(topics => {
                 console.log("Topics received:", topics);
 
@@ -20,7 +25,7 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
                 // Group tabs by their assigned topics
                 for (let i = 0; i < tabs.length; i++) {
                     const tab = tabs[i];
-                    const topicIndex = Number(topics[i]['topic']); // Assuming topics is an array of topic indexes
+                    const topicIndex = Number(topics[i]?.topic) || 25; // Default to topic number 25 if topics[i] is undefined
 
                     if (!groupedTabs[topicIndex]) {
                         groupedTabs[topicIndex] = [];
@@ -39,11 +44,11 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
 
                     // Create a new window with the grouped tabs
                     windowPromises.push(new Promise((resolve) => {
-                        chrome.windows.create({ url: tabUrlsToMove, focused: true }, (newWindow) => {
+                        browser.windows.create({ url: tabUrlsToMove, focused: true }).then((newWindow) => {
                             // Maximize the new window
-                            chrome.windows.update(newWindow.id, { state: 'maximized' }, () => {
+                            browser.windows.update(newWindow.id, { state: 'maximized' }).then(() => {
                                 // Remove the original tabs after moving
-                                chrome.tabs.remove(tabIdsToRemove, () => {
+                                browser.tabs.remove(tabIdsToRemove).then(() => {
                                     windowsCreated++;
                                     resolve();
                                 });
@@ -65,7 +70,35 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
             })
             .catch(error => {
                 console.error('Error fetching topics:', error);
-                sendResponse({ success: false });
+                // Handle case where topics are undefined or fetch failed
+                // Default to topic number 25 for all tabs
+                const topicIndex = 25;
+                const groupedTabs = { [topicIndex]: tabs };
+
+                const windowPromises = tabs.map(tab => {
+                    const tabUrlsToMove = [tab.url];
+                    const tabIdsToRemove = [tab.id];
+
+                    return new Promise((resolve) => {
+                        browser.windows.create({ url: tabUrlsToMove, focused: true }).then((newWindow) => {
+                            browser.windows.update(newWindow.id, { state: 'maximized' }).then(() => {
+                                browser.tabs.remove(tabIdsToRemove).then(() => {
+                                    resolve();
+                                });
+                            });
+                        });
+                    });
+                });
+
+                Promise.all(windowPromises)
+                    .then(() => {
+                        console.log("Tabs moved to respective windows successfully and original tabs removed.");
+                        sendResponse({ success: true, windowsCreated: tabs.length });
+                    })
+                    .catch(error => {
+                        console.error('Error moving tabs to windows or removing original tabs:', error);
+                        sendResponse({ success: false });
+                    });
             });
         });
 
@@ -75,7 +108,6 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
 });
 
 async function fetchTabUrls() {
-    const tabs = await chrome.tabs.query({});
+    const tabs = await browser.tabs.query({});
     return tabs;
 }
-

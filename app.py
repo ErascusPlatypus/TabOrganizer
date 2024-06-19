@@ -11,6 +11,7 @@ import warnings
 import logging
 from bs4 import BeautifulSoup
 import requests
+from urllib.parse import urlparse, parse_qs
 
 # Suppress warnings
 warnings.filterwarnings("ignore", category=UserWarning, module="sklearn")
@@ -22,9 +23,11 @@ CORS(app)
 # Load LDA model and vectorizer using pickle
 print("Loading LDA model and vectorizer...")
 lda = joblib.load('models/lda_model.pkl')
+#lda = joblib.load('new_lda_model.pkl')
 print("LDA model loaded successfully.")
 
 vectorizer = joblib.load('models/vectorizer.pkl')
+#vectorizer = joblib.load('new_vectorizer.pkl')
 print("Vectorizer loaded successfully.")
 
 nltk.download('punkt')
@@ -52,7 +55,7 @@ def preprocess_text(text):
 def predict_topic():
     data = request.json
     urls = data.get('urls', [])
-    print('recieved urls')
+    print('received urls:', urls)
     texts = []
     for url in urls:
         text = extract_text_from_url(url)
@@ -77,7 +80,10 @@ def predict_topic():
         topic_probability = dist.max()
         topic_name = f"Topic #{topic_index}"
         topics.append({'topic': str(topic_index), 'probability': topic_probability})
-        # topics.append(topic_index)
+    
+    # If no topics were predicted, assign topic number 25
+    if not topics:
+        topics.append({'topic': '25', 'probability': 1.0})  # Assigning probability as 1.0 for default topic
     
     print(topics)
     print("Returning predicted topics.")
@@ -85,18 +91,56 @@ def predict_topic():
 
 def extract_text_from_url(url):
     try:
-        logging.info(f'Extracting text from URL: {url}')
-        response = requests.get(url)
-        soup = BeautifulSoup(response.content, 'html.parser')
+        logging.info(f'Extracting content from URL: {url}')
         
-        # Extract text based on HTML structure of news websites
-        paragraphs = soup.find_all('p')
-        article_text = ' '.join([p.get_text() for p in paragraphs])
-        logging.info('Text extraction complete')
-        return article_text
-    
+        if "youtube.com" in url or "youtu.be" in url:
+            return extract_youtube_title(url)
+        elif "google.com" in url:
+            return extract_google_query(url)
+        else:
+            return extract_article_text(url)
+        
     except Exception as e:
         logging.error(f"Error extracting text: {e}")
+        return None
+
+def extract_article_text(url):
+    response = requests.get(url)
+    soup = BeautifulSoup(response.content, 'html.parser')
+    
+    # Extract text based on HTML structure of news websites
+    paragraphs = soup.find_all('p')
+    article_text = ' '.join([p.get_text() for p in paragraphs])
+    logging.info('Text extraction complete')
+    return article_text
+
+def extract_youtube_title(url):
+    response = requests.get(url)
+    soup = BeautifulSoup(response.content, 'html.parser')
+    
+    # Extract title of YouTube video
+    title = soup.find('meta', property='og:title')
+    if title:
+        video_title = title['content']
+        logging.info('YouTube title extraction complete')
+        return video_title
+    else:
+        logging.warning('Could not find YouTube video title')
+        return None
+
+def extract_google_query(url):
+    try:
+        parsed_url = urlparse(url)
+        query_params = parse_qs(parsed_url.query)
+        
+        if 'q' in query_params:
+            search_query = query_params['q'][0]
+            return search_query
+        else:
+            return None
+    
+    except Exception as e:
+        print(f"Error extracting search query: {e}")
         return None
 
 
