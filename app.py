@@ -13,14 +13,11 @@ from bs4 import BeautifulSoup
 import requests
 from urllib.parse import urlparse, parse_qs
 
-# Suppress warnings
 warnings.filterwarnings("ignore", category=UserWarning, module="sklearn")
 
-# Initialize Flask app
 app = Flask(__name__)
 CORS(app)
 
-# Load LDA model and vectorizer using pickle
 print("Loading LDA model and vectorizer...")
 lda = joblib.load('models/lda_model.pkl')
 #lda = joblib.load('new_lda_model.pkl')
@@ -35,19 +32,14 @@ nltk.download('stopwords')
 nltk.download('wordnet')
 
 def preprocess_text(text):
-    # Remove numbers and special characters
     text = re.sub(r'[^a-zA-Z\s]', '', text)
-    # Convert to lowercase
     text = text.lower()
-    # Tokenize
     tokens = word_tokenize(text)
-    # Remove stop words
     stop_words = set(stopwords.words('english'))
     tokens = [token for token in tokens if token not in stop_words]
-    # Lemmatize
     lemmatizer = WordNetLemmatizer()
     tokens = [lemmatizer.lemmatize(token) for token in tokens]
-    # Join tokens back into text
+
     processed_text = ' '.join(tokens)
     return processed_text
 
@@ -83,7 +75,7 @@ def predict_topic():
     
     # If no topics were predicted, assign topic number 25
     if not topics:
-        topics.append({'topic': '25', 'probability': 1.0})  # Assigning probability as 1.0 for default topic
+        topics.append({'topic': '25', 'probability': 1.0})  
     
     print(topics)
     print("Returning predicted topics.")
@@ -108,7 +100,6 @@ def extract_article_text(url):
     response = requests.get(url)
     soup = BeautifulSoup(response.content, 'html.parser')
     
-    # Extract text based on HTML structure of news websites
     paragraphs = soup.find_all('p')
     article_text = ' '.join([p.get_text() for p in paragraphs])
     logging.info('Text extraction complete')
@@ -118,7 +109,6 @@ def extract_youtube_title(url):
     response = requests.get(url)
     soup = BeautifulSoup(response.content, 'html.parser')
     
-    # Extract title of YouTube video
     title = soup.find('meta', property='og:title')
     if title:
         video_title = title['content']
