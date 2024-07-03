@@ -4,7 +4,7 @@ browser.runtime.onMessage.addListener((message, sender, sendResponse) => {
             const tabUrls = tabs.map(tab => tab.url);
             console.log("Tab URLs retrieved:", tabUrls);
 
-            fetch('http://127.0.0.1:5000/predict_topic', {
+            fetch('https://taborganizer.onrender.com/predict_topic', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
