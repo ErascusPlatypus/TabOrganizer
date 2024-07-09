@@ -1,60 +1,219 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Tab Organizer Extension</title>
-    <link rel="stylesheet" href="styles.css">
-</head>
-<body>
+    <style>
+      body {
+        font-family: "Arial", sans-serif;
+        margin: 0;
+        padding: 0;
+        background-color: #f4f4f4;
+        color: #333;
+      }
+
+      header {
+        background-color: #007bff;
+        color: white;
+        padding: 50px 20px;
+        text-align: center;
+      }
+
+      header .container {
+        max-width: 1200px;
+        margin: 0 auto;
+      }
+
+      header h1 {
+        font-size: 3em;
+        margin-bottom: 20px;
+      }
+
+      header p {
+        font-size: 1.2em;
+        margin-bottom: 20px;
+      }
+
+      header .cta-button {
+        background-color: #fff;
+        color: #007bff;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 5px;
+        font-size: 1.2em;
+        text-decoration: none;
+        transition: background-color 0.3s;
+      }
+
+      header .cta-button:hover {
+        background-color: #e0e0e0;
+      }
+
+      main .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 20px;
+      }
+
+      .features {
+        background-color: #fff;
+        padding: 50px 20px;
+        text-align: center;
+      }
+
+      .features h2 {
+        font-size: 2.5em;
+        margin-bottom: 20px;
+      }
+
+      .features .feature-list {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-around;
+      }
+
+      .features .feature-item {
+        width: 45%;
+        margin-bottom: 20px;
+      }
+
+      .features .feature-item h3 {
+        font-size: 1.5em;
+        margin-bottom: 10px;
+      }
+
+      .how-it-works {
+        background-color: #e0e0e0;
+        padding: 50px 20px;
+        text-align: center;
+      }
+
+      .how-it-works h2 {
+        font-size: 2.5em;
+        margin-bottom: 20px;
+      }
+
+      .how-it-works p {
+        font-size: 1.2em;
+        max-width: 800px;
+        margin: 0 auto;
+      }
+
+      .get-started {
+        background-color: #007bff;
+        color: white;
+        padding: 50px 20px;
+        text-align: center;
+      }
+
+      .get-started h2 {
+        font-size: 2.5em;
+        margin-bottom: 20px;
+      }
+
+      .get-started .cta-button {
+        background-color: #fff;
+        color: #007bff;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 5px;
+        font-size: 1.2em;
+        text-decoration: none;
+        transition: background-color 0.3s;
+      }
+
+      .get-started .cta-button:hover {
+        background-color: #e0e0e0;
+      }
+
+      footer {
+        background-color: #333;
+        color: white;
+        text-align: center;
+        padding: 20px;
+      }
+
+      footer p {
+        margin: 0;
+      }
+    </style>
+  </head>
+  <body>
     <header>
-        <div class="container">
-            <h1>Tab Organizer</h1>
-            <p>Effortlessly organize your browser tabs with our powerful extension.</p>
-            <a href="https://addons.mozilla.org/en-US/firefox/addon/organize-your-tabs/?utm_source=addons.mozilla.org&utm_medium=referral&utm_content=search" class="cta-button">Get the Extension</a>
-        </div>
+      <div class="container">
+        <h1>Tab Organizer</h1>
+        <p>
+          Effortlessly organize your browser tabs with our powerful extension.
+        </p>
+        <a
+          href="https://addons.mozilla.org/en-US/firefox/addon/organize-your-tabs/?utm_source=addons.mozilla.org&utm_medium=referral&utm_content=search"
+          class="cta-button"
+          >Get the Extension</a
+        >
+      </div>
     </header>
     <main>
-        <section class="features">
-            <div class="container">
-                <h2>Features</h2>
-                <div class="feature-list">
-                    <div class="feature-item">
-                        <h3>Automatic Tab Grouping</h3>
-                        <p>Automatically organize your tabs into groups based on their content and topics.</p>
-                    </div>
-                    <div class="feature-item">
-                        <h3>Easy to Use</h3>
-                        <p>One-click tab organization that saves you time and enhances your browsing experience.</p>
-                    </div>
-                    <div class="feature-item">
-                        <h3>Enhanced Productivity</h3>
-                        <p>Keep your workspace tidy and improve your productivity by managing your tabs efficiently.</p>
-                    </div>
-                    <div class="feature-item">
-                        <h3>Automatic Detection</h3>
-                        <p>Automatically detects if a YouTube URL is open and extracts the channel name to provide recommendations.</p>
-                    </div>
-                </div>
+      <section class="features">
+        <div class="container">
+          <h2>Features</h2>
+          <div class="feature-list">
+            <div class="feature-item">
+              <h3>Automatic Tab Grouping</h3>
+              <p>
+                Automatically organize your tabs into groups based on their
+                content and topics.
+              </p>
             </div>
-        </section>
-        <section class="how-it-works">
-            <div class="container">
-                <h2>How It Works</h2>
-                <p>Install the Tab Organizer extension from the Firefox Add-ons store. With just one click, you can group your tabs based on their topics, keeping your browser organized and your workflow smooth.</p>
+            <div class="feature-item">
+              <h3>Easy to Use</h3>
+              <p>
+                One-click tab organization that saves you time and enhances your
+                browsing experience.
+              </p>
             </div>
-        </section>
-        <section class="get-started">
-            <div class="container">
-                <h2>Get Started</h2>
-                <a href="https://addons.mozilla.org/en-US/firefox/addon/organize-your-tabs/?utm_source=addons.mozilla.org&utm_medium=referral&utm_content=search" class="cta-button">Download Now</a>
+            <div class="feature-item">
+              <h3>Enhanced Productivity</h3>
+              <p>
+                Keep your workspace tidy and improve your productivity by
+                managing your tabs efficiently.
+              </p>
             </div>
-        </section>
+            <div class="feature-item">
+              <h3>Automatic Detection</h3>
+              <p>
+                Automatically detects if a YouTube URL is open and extracts the
+                channel name to provide recommendations.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+      <section class="how-it-works">
+        <div class="container">
+          <h2>How It Works</h2>
+          <p>
+            Install the Tab Organizer extension from the Firefox Add-ons store.
+            With just one click, you can group your tabs based on their topics,
+            keeping your browser organized and your workflow smooth.
+          </p>
+        </div>
+      </section>
+      <section class="get-started">
+        <div class="container">
+          <h2>Get Started</h2>
+          <a
+            href="https://addons.mozilla.org/en-US/firefox/addon/organize-your-tabs/?utm_source=addons.mozilla.org&utm_medium=referral&utm_content=search"
+            class="cta-button"
+            >Download Now</a
+          >
+        </div>
+      </section>
     </main>
     <footer>
-        <div class="container">
-            <p>&copy; 2024 Tab Organizer. All rights reserved.</p>
-        </div>
+      <div class="container">
+        <p>&copy; 2024 Tab Organizer. All rights reserved.</p>
+      </div>
     </footer>
-</body>
+  </body>
 </html>
