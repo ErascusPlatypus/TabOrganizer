@@ -5,7 +5,7 @@ import nltk
 from nltk.corpus import stopwords
 from nltk.tokenize import word_tokenize
 from nltk.stem import WordNetLemmatizer
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, render_template
 from flask_cors import CORS
 import warnings
 import logging
@@ -133,6 +133,10 @@ def extract_google_query(url):
         print(f"Error extracting search query: {e}")
         return None
 
+@app.route('/')
+def home():
+    logging.info('Home page accessed')
+    return render_template('index.html')
 
 if __name__ == '__main__':
     print("Starting Flask app...")
